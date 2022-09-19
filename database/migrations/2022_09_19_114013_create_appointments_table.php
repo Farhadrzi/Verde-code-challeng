@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->string('address');
+            $table->string('distance');
             $table->dateTime('date');
             $table->dateTime('departure_time');
             $table->dateTime('available_time');
