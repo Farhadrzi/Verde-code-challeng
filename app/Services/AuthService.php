@@ -7,17 +7,31 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthService
 {
-    public function register(array $userData){
-        //todo:Create User
 
-//        $token = Auth::login($user);
-//        return [
-////            'user' => $user,
-////            'authorisation' => [
-////                'token' => $token,
-////                'type' => 'bearer',
-////            ]
-////        ];
+    /**
+     * @var UserService
+     */
+    private UserService $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
+    public function register(array $userData){
+        try {
+            $user = $this->userService->createUser($userData);
+            $token = Auth::login($user);
+            return [
+                'user' => $user,
+                'authorisation' => [
+                    'token' => $token,
+                    'type' => 'bearer',
+                ]
+            ];
+        }catch (Exception $exception){
+            throw new Exception($exception->getMessage());
+        }
     }
 
     public function login(array $credentials){
@@ -41,17 +55,24 @@ class AuthService
     }
 
     public function logout(){
-        Auth::logout();
-        return true;
+        try {
+            Auth::logout();
+        }catch (Exception $exception){
+            throw new Exception($exception->getMessage());
+        }
     }
 
     public function refresh(){
-        return [
-            'user' => Auth::user(),
-            'authorisation' => [
-                'token' => Auth::refresh(),
-                'type' => 'bearer',
-            ]
-        ];
+        try {
+            return [
+                'user' => Auth::user(),
+                'authorisation' => [
+                    'token' => Auth::refresh(),
+                    'type' => 'bearer',
+                ]
+            ];
+        }catch (Exception $exception){
+            throw new Exception($exception->getMessage());
+        }
     }
 }
