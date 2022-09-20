@@ -9,6 +9,12 @@ use App\Models\Contact;
 
 class ContactRepository implements ContactInterface
 {
+    /**
+     * Create Contact Or Select if created
+     * @param array $contactData
+     * @return mixed
+     * @throws \Exception
+     */
     public function createContract(array $contactData){
         try {
             return Contact::firstOrCreate($contactData);

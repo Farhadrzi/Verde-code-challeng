@@ -28,6 +28,13 @@ class AppointmentService
         $this->contactInterface = $contactInterface;
     }
 
+    /**
+     *
+     * Create Appointment and also use google api traits for calculate postal code
+     * @param array $appointmentData
+     * @return mixed
+     * @throws Exception
+     */
     public function createAppointment(array $appointmentData){
         try {
             $contact = $this->contactInterface->createContract($appointmentData['contact']);
@@ -49,6 +56,12 @@ class AppointmentService
         }
     }
 
+    /**
+     * Update Appointment data
+     * @param $appointmentId
+     * @param $appointmentUpdateData
+     * @throws Exception
+     */
     public function updateAppointment($appointmentId,$appointmentUpdateData){
         try {
             $this->appointmentInterface->updateAppointment($appointmentId, $appointmentUpdateData);
@@ -57,6 +70,12 @@ class AppointmentService
         }
     }
 
+    /**
+     *
+     * delete appointment with appointmentId
+     * @param $appointmentId
+     * @throws Exception
+     */
     public function deleteAppointment($appointmentId){
         try {
             $this->appointmentInterface->deleteAppointment($appointmentId);
@@ -65,6 +84,15 @@ class AppointmentService
         }
     }
 
+    /**
+     *
+     * get appointment list and also filterable base of time
+     * @param null $userId
+     * @param null $startDate
+     * @param null $endDate
+     * @return mixed
+     * @throws Exception
+     */
     public function getAppointmentList($userId=null,$startDate=null,$endDate=null){
         try {
             return $this->appointmentInterface->getAppointmentList($userId,$startDate,$endDate);

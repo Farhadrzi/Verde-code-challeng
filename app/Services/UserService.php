@@ -21,7 +21,7 @@ class UserService
 
     /**
      *
-     * Create User
+     * Create User and insert to database
      * @param array $userData
      * @return mixed
      */

@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Http;
 
 trait GoogleApiTrait
 {
+    /**
+     * Call google API and get Data from Google Distance Matrix Service base of postal Code
+     * @param $destinationPostalCode
+     * @return object
+     * @throws \Exception
+     */
     public function getPostalCodeDetail($destinationPostalCode){
         try {
             $response = Http::get("https://maps.googleapis.com/maps/api/distancematrix/json?destinations=".trim($destinationPostalCode)."&origins=CM27PJ&
