@@ -18,6 +18,12 @@ class AuthService
         $this->userService = $userService;
     }
 
+    /**
+     * Register User and create JWT token
+     * @param array $userData
+     * @return array
+     * @throws Exception
+     */
     public function register(array $userData){
         try {
             $user = $this->userService->createUser($userData);
@@ -34,6 +40,13 @@ class AuthService
         }
     }
 
+    /**
+     *
+     * Login user with email and password
+     * @param array $credentials
+     * @return array
+     * @throws Exception
+     */
     public function login(array $credentials){
         try {
             $token = Auth::attempt($credentials);
@@ -54,6 +67,10 @@ class AuthService
         }
     }
 
+    /**
+     * Logout user
+     * @throws Exception
+     */
     public function logout(){
         try {
             Auth::logout();
@@ -62,6 +79,11 @@ class AuthService
         }
     }
 
+    /**
+     * refresh user jwt token
+     * @return array
+     * @throws Exception
+     */
     public function refresh(){
         try {
             return [
