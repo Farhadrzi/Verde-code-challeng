@@ -58,7 +58,6 @@ class AppointmentController extends AppBaseController
     public function getUserAppointmentList(Request $request){
         $userId = $request->user()->id;
         try {
-            error_log($request->startDate);
             $appointmentList = $this->appointmentService->getAppointmentList($userId,$request->startDate,$request->endDate);
             return $this->response->success($appointmentList,'success');
         }catch (\Exception $exception){
@@ -68,7 +67,6 @@ class AppointmentController extends AppBaseController
 
     public function getAllAppointmentList(Request $request){
         try {
-            error_log($request->get('startDate'));
             $appointmentList = $this->appointmentService->getAppointmentList(null,$request->get('startDate'),$request->get('endDate'));
             return $this->response->success($appointmentList,'success');
         }catch (\Exception $exception){
