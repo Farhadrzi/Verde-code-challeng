@@ -23,31 +23,56 @@ class AppointmentController extends AppBaseController
 
     public function createAppointment(CreateAppointmentRequest $request){
         try {
-            $this->appointmentService->createAppointment($request->all());
+            $userId = $request->user()->id;
+            $requestData = $request->all();
+            $requestData['user_id']=$userId;
+            $appointment = $this->appointmentService->createAppointment($requestData);
+            return $this->response->success($appointment,'success');
         }catch (\Exception $exception){
-            $this->response->error($exception->getMessage());
+            return $this->response->error($exception->getMessage());
         }
     }
 
     public function updateAppointment(UpdateAppointmentRequest $request){
         try {
             if($request->appointmentData!=null||$request->appointmentData!=''){
-                $this->appointmentService->updateAppointment($request->appointmentId, $request->appointmentData);
-                $this->response->success('appointment updated successfully');
+                $this->appointmentService->updateAppointment($request->appointmentId, $request->only(['appointmentData']));
+                return $this->response->success(null,'appointment updated successfully');
             }else{
-                $this->response->error('there is nothing to updated');
+                return $this->response->error('there is nothing to updated');
             }
         }catch (\Exception $exception){
-            $this->response->error($exception->getMessage());
+            return $this->response->error($exception->getMessage());
         }
     }
 
     public function deleteAppointment(DeleteAppointmentRequest $request){
         try {
             $this->appointmentService->deleteAppointment($request->appointmentId);
-            $this->response->success('appointment deleted successfully');
+            return $this->response->success(null,'appointment deleted successfully');
         }catch (\Exception $exception){
-            $this->response->error($exception->getMessage());
+            return $this->response->error($exception->getMessage());
+        }
+    }
+
+    public function getUserAppointmentList(Request $request){
+        $userId = $request->user()->id;
+        try {
+            error_log($request->startDate);
+            $appointmentList = $this->appointmentService->getAppointmentList($userId,$request->startDate,$request->endDate);
+            return $this->response->success($appointmentList,'success');
+        }catch (\Exception $exception){
+            return $this->response->error($exception->getMessage());
+        }
+    }
+
+    public function getAllAppointmentList(Request $request){
+        try {
+            error_log($request->get('startDate'));
+            $appointmentList = $this->appointmentService->getAppointmentList(null,$request->get('startDate'),$request->get('endDate'));
+            return $this->response->success($appointmentList,'success');
+        }catch (\Exception $exception){
+            return $this->response->error($exception->getMessage());
         }
     }
 }

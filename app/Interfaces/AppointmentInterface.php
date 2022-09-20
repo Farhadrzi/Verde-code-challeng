@@ -9,4 +9,6 @@ interface AppointmentInterface
     public function updateAppointment($appointmentId, array $updatedValue);
 
     public function deleteAppointment($appointmentId);
+
+    public function getAppointmentList($userId=null,$startDate=null,$endDate=null);
 }
