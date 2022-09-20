@@ -3,6 +3,9 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use PHPOpenSourceSaver\JWTAuth\Http\Middleware\Authenticate;
+use PHPOpenSourceSaver\JWTAuth\Http\Middleware\RefreshToken;
+use PHPOpenSourceSaver\JWTAuth\JWTAuth;
 
 class Kernel extends HttpKernel
 {
@@ -63,5 +66,6 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'jwt.refresh' => RefreshToken::class,
     ];
 }
