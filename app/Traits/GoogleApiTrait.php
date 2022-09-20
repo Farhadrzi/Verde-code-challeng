@@ -15,6 +15,7 @@ trait GoogleApiTrait
      * @throws \Exception
      */
     public function getPostalCodeDetail($destinationPostalCode){
+        $isInUk=false;
         try {
             $response = Http::get("https://maps.googleapis.com/maps/api/distancematrix/json?destinations=".trim($destinationPostalCode)."&origins=CM27PJ&
         units=metric&key=AIzaSyCdUK1PNwGsutqnophMfGjrficFmSPPsoY");
@@ -23,7 +24,12 @@ trait GoogleApiTrait
                 if(isset($json->rows)){
                     if($json->rows!=[]){
                         if(isset($json->rows[0]->elements)){
-                            if(str_contains($json->destination_addresses, 'UK')){
+                            foreach ($json->destination_addresses as $destination){
+                                if(str_contains($destination, 'UK')){
+                                    $isInUk=true;
+                                }
+                            }
+                            if($isInUk){
                                 $element= $json->rows[0]->elements;
                                 $distance = $element[0]->distance->value;
                                 $duration = $element[0]->duration->value;
